@@ -14,26 +14,31 @@ export class GitService {
     branch: string;
     commitPrefix: string;
   };
+  private isServer: boolean;
 
   private constructor() {
+    this.isServer = typeof window === 'undefined';
+    
     this.config = {
       autoPush: true,
       branch: 'main',
       commitPrefix: '[EHB AI Agent]'
     };
 
-    // Try to load config from file
-    try {
-      const configPath = path.join(process.cwd(), 'app', 'config', 'cursor-deploy-config.json');
-      if (fs.existsSync(configPath)) {
-        const configData = JSON.parse(fs.readFileSync(configPath, 'utf8'));
-        if (configData.github) {
-          this.config.autoPush = configData.github.autoPush ?? true;
-          this.config.branch = configData.github.branch ?? 'main';
+    // Try to load config from file (server-side only)
+    if (this.isServer) {
+      try {
+        const configPath = path.join(process.cwd(), 'app', 'config', 'cursor-deploy-config.json');
+        if (fs.existsSync(configPath)) {
+          const configData = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+          if (configData.github) {
+            this.config.autoPush = configData.github.autoPush ?? true;
+            this.config.branch = configData.github.branch ?? 'main';
+          }
         }
+      } catch (error) {
+        console.error('Error loading git config:', error);
       }
-    } catch (error) {
-      console.error('Error loading git config:', error);
     }
   }
 
@@ -48,6 +53,11 @@ export class GitService {
    * Execute a git command and return the result
    */
   private async executeCommand(command: string): Promise<string> {
+    if (!this.isServer) {
+      console.log('Git commands can only be executed on the server');
+      return '';
+    }
+    
     return new Promise((resolve, reject) => {
       exec(command, (error, stdout, stderr) => {
         if (error) {
@@ -65,6 +75,10 @@ export class GitService {
    * Get the current git status
    */
   async getStatus(): Promise<string> {
+    if (!this.isServer) {
+      return '';
+    }
+    
     try {
       return await this.executeCommand('git status --porcelain');
     } catch (error) {
@@ -77,6 +91,10 @@ export class GitService {
    * Check if there are any changes to commit
    */
   async hasChanges(): Promise<boolean> {
+    if (!this.isServer) {
+      return false;
+    }
+    
     const status = await this.getStatus();
     return status.length > 0;
   }
@@ -85,6 +103,11 @@ export class GitService {
    * Commit and push changes with a message
    */
   async commitAndPush(message: string): Promise<boolean> {
+    if (!this.isServer) {
+      console.log('Git operations can only be performed on the server');
+      return false;
+    }
+    
     if (this.isOperationInProgress) {
       console.log('Git operation already in progress, queueing...');
       // Wait and try again
@@ -110,7 +133,17 @@ export class GitService {
       await this.executeCommand(`git commit -m "${fullMessage}"`);
       
       if (this.config.autoPush) {
-        await this.executeCommand(`git push origin ${this.config.branch}`);
+        try {
+          await this.executeCommand(`git push origin ${this.config.branch}`);
+        } catch (error: any) {
+          // Check if error is due to no upstream branch
+          if (error.message && typeof error.message === 'string' && error.message.includes('no upstream branch')) {
+            console.log(`🔄 Setting upstream branch for ${this.config.branch}...`);
+            await this.executeCommand(`git push --set-upstream origin ${this.config.branch}`);
+          } else {
+            throw error; // Re-throw if it's a different error
+          }
+        }
         console.log(`✅ Changes pushed to ${this.config.branch} at ${new Date().toLocaleTimeString()}`);
       } else {
         console.log(`✅ Changes committed locally at ${new Date().toLocaleTimeString()}`);
@@ -129,6 +162,10 @@ export class GitService {
    * Force push changes to the remote repository
    */
   async forcePush(): Promise<boolean> {
+    if (!this.isServer) {
+      return false;
+    }
+    
     try {
       await this.executeCommand(`git push -f origin ${this.config.branch}`);
       return true;
@@ -142,6 +179,10 @@ export class GitService {
    * Initialize a git repository if it doesn't exist
    */
   async initializeRepository(): Promise<boolean> {
+    if (!this.isServer) {
+      return false;
+    }
+    
     try {
       await this.executeCommand('git init');
       await this.executeCommand('git add .');
@@ -179,6 +220,10 @@ export class GitService {
    * Get the current branch
    */
   async getCurrentBranch(): Promise<string> {
+    if (!this.isServer) {
+      return this.config.branch;
+    }
+    
     try {
       return await this.executeCommand('git rev-parse --abbrev-ref HEAD');
     } catch (error) {

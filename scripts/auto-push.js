@@ -92,8 +92,18 @@ async function pushChanges() {
     // Commit changes
     await executeCommand(`git commit -m "Auto-push: ${timestamp} [EHB AI Agent]"`);
     
-    // Push to remote
-    await executeCommand('git push');
+    try {
+      // Try to push to remote
+      await executeCommand('git push');
+    } catch (pushError) {
+      // Handle the case when there's no upstream branch
+      if (pushError.message && pushError.message.includes('no upstream branch')) {
+        console.log('🔄 Setting upstream branch...');
+        await executeCommand('git push --set-upstream origin master');
+      } else {
+        throw pushError; // Re-throw if it's a different error
+      }
+    }
     
     console.log('✅ Changes pushed successfully at ' + new Date().toLocaleTimeString());
   } catch (error) {

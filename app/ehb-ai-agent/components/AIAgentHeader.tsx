@@ -31,6 +31,23 @@ export function AIAgentHeader({
     setIsSyncing(false);
   };
 
+  const handleManualPush = async () => {
+    try {
+      setGitStatus('pushing');
+      const gitService = GitService.getInstance();
+      const result = await gitService.commitAndPush('Manual push from UI');
+      if (result) {
+        setLastPush(new Date().toLocaleTimeString());
+        setGitStatus('idle');
+      } else {
+        setGitStatus('error');
+      }
+    } catch (error) {
+      console.error('Error during manual push:', error);
+      setGitStatus('error');
+    }
+  };
+
   useEffect(() => {
     // Set agent status to online after component mounts
     setAgentStatus('online');
@@ -38,10 +55,13 @@ export function AIAgentHeader({
     // Check git status every 10 seconds
     const gitStatusInterval = setInterval(async () => {
       try {
+        // Check if we're in a browser environment
+        if (typeof window === 'undefined') return;
+        
         const gitService = GitService.getInstance();
         const hasChanges = await gitService.hasChanges();
         
-        if (hasChanges) {
+        if (hasChanges && gitStatus !== 'pushing') {
           setGitStatus('pushing');
           // This will trigger the actual push via the auto-push system
           setTimeout(() => {
@@ -58,7 +78,7 @@ export function AIAgentHeader({
     return () => {
       clearInterval(gitStatusInterval);
     };
-  }, []);
+  }, [gitStatus]);
 
   return (
     <header className="bg-white border-b border-gray-200 px-4 py-3">
@@ -87,6 +107,17 @@ export function AIAgentHeader({
             {lastPush && (
               <span className="text-xs ml-2 text-gray-400">Last: {lastPush}</span>
             )}
+            <button
+              onClick={handleManualPush}
+              disabled={gitStatus === 'pushing'}
+              className={`ml-2 text-xs px-2 py-0.5 rounded ${
+                gitStatus === 'pushing' 
+                  ? 'bg-gray-200 text-gray-400 cursor-not-allowed' 
+                  : 'bg-blue-100 text-blue-600 hover:bg-blue-200'
+              }`}
+            >
+              Push
+            </button>
           </div>
           
           {/* Agent Status Indicator */}
