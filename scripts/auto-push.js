@@ -2,6 +2,7 @@ const { exec } = require('child_process');
 const chokidar = require('chokidar');
 const path = require('path');
 const os = require('os');
+const fs = require('fs');
 
 // Configuration
 const WATCH_PATHS = [
@@ -57,6 +58,77 @@ let changedFiles = new Set();
 let lastPushTime = Date.now();
 let consecutivePushes = 0;
 
+// Performance monitoring
+const performanceMetrics = {
+  totalPushes: 0,
+  totalFilesChanged: 0,
+  totalPushTime: 0,
+  averagePushTime: 0,
+  fastestPush: Infinity,
+  slowestPush: 0,
+  lastPushTime: 0,
+  startTime: Date.now(),
+  cpuUsage: [],
+  memoryUsage: [],
+  pushHistory: [],
+};
+
+// Log performance stats every 10 pushes or when requested
+function logPerformanceStats() {
+  const uptime = (Date.now() - performanceMetrics.startTime) / 1000;
+  const memoryUsed = process.memoryUsage().heapUsed / 1024 / 1024;
+  const cpuCount = os.cpus().length;
+  
+  console.log('\n📊 ===== ULTRA-FAST AUTO-PUSH PERFORMANCE STATS =====');
+  console.log(`⏱️  Uptime: ${Math.floor(uptime / 60)}m ${Math.floor(uptime % 60)}s`);
+  console.log(`🔄 Total pushes: ${performanceMetrics.totalPushes}`);
+  console.log(`📝 Total files processed: ${performanceMetrics.totalFilesChanged}`);
+  console.log(`⚡ Average push time: ${performanceMetrics.averagePushTime.toFixed(2)}ms`);
+  console.log(`🚀 Fastest push: ${performanceMetrics.fastestPush < Infinity ? performanceMetrics.fastestPush.toFixed(2) + 'ms' : 'N/A'}`);
+  console.log(`🐢 Slowest push: ${performanceMetrics.slowestPush.toFixed(2)}ms`);
+  console.log(`💾 Memory usage: ${memoryUsed.toFixed(2)}MB`);
+  console.log(`💻 CPU cores: ${cpuCount}`);
+  
+  // Save metrics to file for UI consumption
+  try {
+    const metricsPath = path.join(process.cwd(), 'app', 'ehb-ai-agent', 'data', 'auto-push-metrics.json');
+    fs.mkdirSync(path.dirname(metricsPath), { recursive: true });
+    fs.writeFileSync(metricsPath, JSON.stringify(performanceMetrics, null, 2));
+  } catch (error) {
+    console.error('Failed to save metrics:', error.message);
+  }
+  
+  console.log('📊 ===============================================\n');
+}
+
+// Update metrics after each push
+function updatePerformanceMetrics(pushTime, filesChanged) {
+  performanceMetrics.totalPushes++;
+  performanceMetrics.totalFilesChanged += filesChanged;
+  performanceMetrics.totalPushTime += pushTime;
+  performanceMetrics.averagePushTime = performanceMetrics.totalPushTime / performanceMetrics.totalPushes;
+  performanceMetrics.fastestPush = Math.min(performanceMetrics.fastestPush, pushTime);
+  performanceMetrics.slowestPush = Math.max(performanceMetrics.slowestPush, pushTime);
+  performanceMetrics.lastPushTime = pushTime;
+  
+  // Track memory and CPU
+  performanceMetrics.memoryUsage.push(process.memoryUsage().heapUsed / 1024 / 1024);
+  if (performanceMetrics.memoryUsage.length > 20) performanceMetrics.memoryUsage.shift();
+  
+  // Keep history of last 10 pushes
+  performanceMetrics.pushHistory.push({
+    timestamp: new Date().toISOString(),
+    duration: pushTime,
+    filesChanged: filesChanged
+  });
+  if (performanceMetrics.pushHistory.length > 10) performanceMetrics.pushHistory.shift();
+  
+  // Log stats every 10 pushes
+  if (performanceMetrics.totalPushes % 10 === 0) {
+    logPerformanceStats();
+  }
+}
+
 // Execute command with optimized performance
 function executeCommand(command) {
   return new Promise((resolve, reject) => {
@@ -92,6 +164,9 @@ async function pushChanges() {
     return;
   }
   
+  const pushStartTime = Date.now();
+  let fileCount = 0;
+  
   try {
     isPushInProgress = true;
     console.log('🚀 Fast-pushing changes to GitHub...');
@@ -105,7 +180,7 @@ async function pushChanges() {
       return;
     }
     
-    const fileCount = status.split('\n').filter(line => line.trim()).length;
+    fileCount = status.split('\n').filter(line => line.trim()).length;
     console.log(`📊 Processing ${fileCount} changed files`);
     
     // Add all changes - use parallel git operations for large repos
@@ -137,7 +212,10 @@ async function pushChanges() {
     consecutivePushes++;
     changedFiles.clear();
     
-    console.log(`✅ Changes pushed successfully at ${new Date().toLocaleTimeString()} (${Date.now() - now}ms)`);
+    const pushDuration = Date.now() - pushStartTime;
+    updatePerformanceMetrics(pushDuration, fileCount);
+    
+    console.log(`✅ Changes pushed successfully at ${new Date().toLocaleTimeString()} (${pushDuration}ms)`);
   } catch (error) {
     console.error('❌ Error pushing changes:', error.message);
     
@@ -217,6 +295,11 @@ console.log('🚀 Ultra-fast auto-push system initialized!');
 console.log(`⏱️ Auto-push delay set to ${DEBOUNCE_DELAY}ms (ultra-fast mode)`);
 console.log(`⚙️ Performance optimizations: ${MAX_CONCURRENT_OPERATIONS} concurrent operations, batch mode: ${BATCH_CHANGES}`);
 console.log('👀 Watching for changes...');
+
+// Add command line arguments for performance monitoring
+if (process.argv.includes('--stats')) {
+  logPerformanceStats();
+}
 
 // Start immediately
 setImmediate(() => {

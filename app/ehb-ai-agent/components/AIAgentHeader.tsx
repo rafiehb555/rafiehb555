@@ -21,6 +21,8 @@ export function AIAgentHeader({
   const [agentStatus, setAgentStatus] = useState<'online' | 'offline' | 'busy'>('offline');
   const [gitStatus, setGitStatus] = useState<'idle' | 'pushing' | 'error'>('idle');
   const [lastPush, setLastPush] = useState<string | null>(null);
+  const [isUltraFastMode, setIsUltraFastMode] = useState(true);
+  const [pushSpeed, setPushSpeed] = useState<number | null>(null);
 
   const handleSync = async () => {
     setIsSyncing(true);
@@ -34,10 +36,15 @@ export function AIAgentHeader({
   const handleManualPush = async () => {
     try {
       setGitStatus('pushing');
+      const startTime = Date.now();
       const gitService = GitService.getInstance();
       const result = await gitService.commitAndPush('Manual push from UI');
+      const endTime = Date.now();
+      const speed = endTime - startTime;
+      
       if (result) {
         setLastPush(new Date().toLocaleTimeString());
+        setPushSpeed(speed);
         setGitStatus('idle');
       } else {
         setGitStatus('error');
@@ -45,6 +52,16 @@ export function AIAgentHeader({
     } catch (error) {
       console.error('Error during manual push:', error);
       setGitStatus('error');
+    }
+  };
+
+  const toggleUltraFastMode = () => {
+    try {
+      const gitService = GitService.getInstance();
+      gitService.setFastMode(!isUltraFastMode);
+      setIsUltraFastMode(!isUltraFastMode);
+    } catch (error) {
+      console.error('Error toggling fast mode:', error);
     }
   };
 
@@ -62,9 +79,12 @@ export function AIAgentHeader({
         const hasChanges = await gitService.hasChanges();
         
         if (hasChanges && gitStatus !== 'pushing') {
+          const startTime = Date.now();
           setGitStatus('pushing');
           // This will trigger the actual push via the auto-push system
           setTimeout(() => {
+            const endTime = Date.now();
+            setPushSpeed(endTime - startTime);
             setGitStatus('idle');
             setLastPush(new Date().toLocaleTimeString());
           }, 3000);
@@ -105,7 +125,10 @@ export function AIAgentHeader({
               </span>
             </div>
             {lastPush && (
-              <span className="text-xs ml-2 text-gray-400">Last: {lastPush}</span>
+              <span className="text-xs ml-2 text-gray-400">
+                Last: {lastPush}
+                {pushSpeed && <span className="ml-1 text-xs text-blue-400">({pushSpeed}ms)</span>}
+              </span>
             )}
             <button
               onClick={handleManualPush}
@@ -117,6 +140,16 @@ export function AIAgentHeader({
               }`}
             >
               Push
+            </button>
+            <button
+              onClick={toggleUltraFastMode}
+              className={`ml-2 text-xs px-2 py-0.5 rounded ${
+                isUltraFastMode
+                  ? 'bg-purple-100 text-purple-600 hover:bg-purple-200' 
+                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+              }`}
+            >
+              {isUltraFastMode ? '⚡ Ultra' : 'Normal'}
             </button>
           </div>
           
