@@ -1,0 +1,66 @@
+{
+  "production": {
+    "url": "https://ehb.tech",
+    "apiUrl": "https://api.ehb.tech",
+    "network": "moonbeam",
+    "contracts": {
+      "rewardsPool": "0x...",
+      "lockEHBGC": "0x...",
+      "splitEarnings": "0x..."
+    }
+  },
+  "testnet": {
+    "url": "https://test.ehb.tech",
+    "apiUrl": "https://test-api.ehb.tech",
+    "network": "moonbeam-testnet",
+    "contracts": {
+      "rewardsPool": "0x...",
+      "lockEHBGC": "0x...",
+      "splitEarnings": "0x..."
+    }
+  },
+  "github": {
+    "repo": "ehb-technologies/ehb-platform",
+    "branch": "main",
+    "autoPush": true,
+    "commitMessage": "Auto-update from EHB AI Agent"
+  },
+  "deployment": {
+    "schedule": {
+      "type": "cron",
+      "value": "0 0 * * *" // Daily at midnight
+    },
+    "autoDeploy": true,
+    "requireApproval": true
+  },
+  "agent": {
+    "enabled": true,
+    "mode": "production",
+    "logLevel": "info",
+    "autoSync": true,
+    "maxConcurrentTasks": 5
+  },
+  "monitoring": {
+    "enabled": true,
+    "endpoints": {
+      "health": "/api/health",
+      "metrics": "/api/metrics",
+      "logs": "/api/logs"
+    },
+    "alerts": {
+      "email": "alerts@ehb.tech",
+      "slack": "https://hooks.slack.com/services/..."
+    }
+  },
+  "security": {
+    "rateLimit": {
+      "enabled": true,
+      "maxRequests": 100,
+      "windowMs": 60000
+    },
+    "cors": {
+      "enabled": true,
+      "origins": ["https://ehb.tech", "https://test.ehb.tech"]
+    }
+  }
+} 

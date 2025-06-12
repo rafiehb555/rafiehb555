@@ -1,107 +1,24 @@
 import React from 'react';
-import { FiCheck, FiClock, FiAlertCircle } from 'react-icons/fi';
+import { FiCheck, FiClock, FiAlertCircle, FiXCircle } from 'react-icons/fi';
+import { roadmapData } from '@/app/roadmap/data/roadmapData';
+import { Module } from '@/app/roadmap/types';
 
-type ModuleStatus = 'completed' | 'in-progress' | 'planned';
-
-interface Module {
-  name: string;
-  description: string;
-  status: ModuleStatus;
-  features: string[];
-}
-
-const modules: Module[] = [
-  {
-    name: 'Security',
-    description: 'Platform Security & Access Control',
-    status: 'completed',
-    features: [
-      'Rate Limiting',
-      'API Key Authentication',
-      'SQL Level Validation',
-      'Route Protection',
-      'Error Boundaries',
-    ],
-  },
-  {
-    name: 'GoSellr',
-    description: 'E-Commerce & Delivery Flow',
-    status: 'completed',
-    features: [
-      'Product Management',
-      'Order Processing',
-      'Delivery Tracking',
-      'Payment Integration',
-    ],
-  },
-  {
-    name: 'WMS',
-    description: 'Doctor Booking & Medical Flow',
-    status: 'in-progress',
-    features: [
-      'Doctor Profiles',
-      'Appointment Booking',
-      'Medical Records',
-      'Prescription Management',
-    ],
-  },
-  {
-    name: 'OLS',
-    description: 'Lawyer Hiring & Legal Consultations',
-    status: 'planned',
-    features: ['Lawyer Profiles', 'Case Management', 'Document Upload', 'Video Consultations'],
-  },
-  {
-    name: 'OBS',
-    description: 'Book Store + Study Pool',
-    status: 'planned',
-    features: ['Book Catalog', 'Study Groups', 'Resource Sharing', 'Progress Tracking'],
-  },
-  {
-    name: 'AGTS',
-    description: 'Travel Booking & Franchise Listing',
-    status: 'planned',
-    features: ['Travel Packages', 'Franchise Directory', 'Booking System', 'Reviews & Ratings'],
-  },
-  {
-    name: 'HPS',
-    description: 'Education, Courses, Exams',
-    status: 'planned',
-    features: ['Course Catalog', 'Exam Platform', 'Progress Tracking', 'Certification'],
-  },
-  {
-    name: 'JPS',
-    description: 'Job Profiles & AI-Based Matching',
-    status: 'planned',
-    features: ['Job Listings', 'AI Matching', 'Resume Builder', 'Interview Scheduling'],
-  },
-  {
-    name: 'SOT',
-    description: 'AI Agent, Chat, Robot Services',
-    status: 'planned',
-    features: ['AI Chatbot', 'Task Automation', 'Service Integration', 'Analytics'],
-  },
-  {
-    name: 'Developer Tools',
-    description: 'Development & Monitoring',
-    status: 'completed',
-    features: ['Module Logs', 'Git Sync Status', 'Commit History', 'Error Tracking'],
-  },
-];
-
-const statusIcons: Record<ModuleStatus, React.ReactElement> = {
-  completed: <FiCheck className="w-5 h-5 text-green-500" />,
-  'in-progress': <FiClock className="w-5 h-5 text-yellow-500" />,
-  planned: <FiAlertCircle className="w-5 h-5 text-blue-500" />,
+const statusIcons: Record<Module['status'], React.ReactElement> = {
+  completed: <FiCheck className="w-5 h-5 text-green-500" />, // ✅
+  'in-progress': <FiClock className="w-5 h-5 text-yellow-500" />, // 🟡
+  planned: <FiAlertCircle className="w-5 h-5 text-blue-500" />, // ℹ️
+  error: <FiXCircle className="w-5 h-5 text-red-500" />, // ❌
 };
 
-const statusColors: Record<ModuleStatus, string> = {
+const statusColors: Record<Module['status'], string> = {
   completed: 'bg-green-100 text-green-800',
   'in-progress': 'bg-yellow-100 text-yellow-800',
   planned: 'bg-blue-100 text-blue-800',
+  error: 'bg-red-100 text-red-800',
 };
 
 export default function RoadmapPage() {
+  const modules = roadmapData.modules;
   return (
     <div className="space-y-8">
       <div className="bg-white rounded-lg shadow-sm p-6">
@@ -124,20 +41,29 @@ export default function RoadmapPage() {
               >
                 {statusIcons[module.status]}
                 <span className="ml-2 text-sm font-medium capitalize">{module.status}</span>
+                {module.status === 'completed' && <span className="ml-2">✅</span>}
+                {module.status === 'in-progress' && <span className="ml-2">🟡</span>}
+                {module.status === 'error' && <span className="ml-2">❌</span>}
               </div>
             </div>
-
+            {module.status === 'error' && module.error && (
+              <div className="mb-2 text-red-600 text-sm flex items-center">
+                <FiXCircle className="mr-1" /> {module.error}
+              </div>
+            )}
             <div className="space-y-3">
               {module.features.map((feature, index) => (
                 <div key={index} className="flex items-center text-gray-600">
                   <div className="w-1.5 h-1.5 rounded-full bg-gray-400 mr-3" />
-                  {feature}
+                  {typeof feature === 'string' ? feature : feature.name}
                 </div>
               ))}
             </div>
+            <div className="mt-2 text-xs text-gray-500">Progress: {module.progress}%</div>
           </div>
         ))}
       </div>
     </div>
   );
 }
+

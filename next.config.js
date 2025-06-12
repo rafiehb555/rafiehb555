@@ -1,23 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  swcMinify: true,
   images: {
-    domains: ['localhost'],
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: '**',
-      },
-    ],
+    domains: ['images.unsplash.com', 'via.placeholder.com'],
   },
-  experimental: {
-    serverActions: true,
+  env: {
+    APP_NAME: 'EHB Technologies',
+    APP_VERSION: '1.0.0',
   },
-  server: {
-    port: 3004,
-  },
-  serverExternalPackages: ['@prisma/client'],
   typescript: {
     ignoreBuildErrors: false,
   },
