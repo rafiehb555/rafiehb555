@@ -7,7 +7,13 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "auto-push": "node scripts/auto-push.js"
+    "auto-push": "node scripts/auto-push.js",
+    "turbo-dev": "NODE_OPTIONS='--max-old-space-size=8192' next dev --turbo",
+    "fast-build": "NEXT_TELEMETRY_DISABLED=1 next build",
+    "fast-start": "next start -p ${PORT:-3000}",
+    "analyze": "ANALYZE=true next build",
+    "clean": "rimraf .next && rimraf node_modules/.cache",
+    "ultra-push": "node scripts/auto-push.js"
   },
   "dependencies": {
     "@types/react": "^18.2.0",
