@@ -1,0 +1,201 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 5,
+    "passes": 0,
+    "pending": 0,
+    "failures": 5,
+    "start": "2025-06-12T07:34:30.748Z",
+    "end": "2025-06-12T07:34:35.684Z",
+    "duration": 4936,
+    "testsRegistered": 5,
+    "passPercent": 0,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "7effd806-00fe-484d-a9a6-40ccc473fc7b",
+      "title": "",
+      "fullFile": "cypress\\e2e\\sql-level.cy.ts",
+      "file": "cypress\\e2e\\sql-level.cy.ts",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "81b34085-9ff2-4577-992b-bbf9577fb443",
+          "title": "SQL Level Access Control",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "should allow access to basic features for level 1 users",
+              "fullTitle": "SQL Level Access Control should allow access to basic features for level 1 users",
+              "timedOut": null,
+              "duration": 244,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "cy.visit('/ehb-dashboard/sql');\ncy.wait('@getSession');\ncy.wait('@verifySQL');\n// Check if basic features are visible\ncy.get('[data-testid=\"sql-basic-features\"]').should('be.visible');\ncy.get('[data-testid=\"sql-advanced-features\"]').should('not.exist');",
+              "err": {
+                "message": "CypressError: `cy.visit()` failed trying to load:\n\nhttp://localhost:3000/ehb-dashboard/sql\n\nThe response we received from your web server was:\n\n  > 500: Internal Server Error\n\nThis was considered a failure because the status code was not `2xx`.\n\nIf you do not want status codes to cause failures pass the option: `failOnStatusCode: false`",
+                "estack": "CypressError: `cy.visit()` failed trying to load:\n\nhttp://localhost:3000/ehb-dashboard/sql\n\nThe response we received from your web server was:\n\n  > 500: Internal Server Error\n\nThis was considered a failure because the status code was not `2xx`.\n\nIf you do not want status codes to cause failures pass the option: `failOnStatusCode: false`\n    at <unknown> (http://localhost:3000/__cypress/runner/cypress_runner.js:131591:76)\n    at visitFailedByErr (http://localhost:3000/__cypress/runner/cypress_runner.js:131006:12)\n    at <unknown> (http://localhost:3000/__cypress/runner/cypress_runner.js:131574:13)\n    at tryCatcher (http://localhost:3000/__cypress/runner/cypress_runner.js:1830:23)\n    at Promise._settlePromiseFromHandler (http://localhost:3000/__cypress/runner/cypress_runner.js:1542:31)\n    at Promise._settlePromise (http://localhost:3000/__cypress/runner/cypress_runner.js:1599:18)\n    at Promise._settlePromise0 (http://localhost:3000/__cypress/runner/cypress_runner.js:1644:10)\n    at Promise._settlePromises (http://localhost:3000/__cypress/runner/cypress_runner.js:1720:18)\n    at _drainQueueStep (http://localhost:3000/__cypress/runner/cypress_runner.js:2430:12)\n    at _drainQueue (http://localhost:3000/__cypress/runner/cypress_runner.js:2423:9)\n    at Async._drainQueues (http://localhost:3000/__cypress/runner/cypress_runner.js:2439:5)\n    at Async.drainQueues (http://localhost:3000/__cypress/runner/cypress_runner.js:2309:14)\nFrom Your Spec Code:\n    at Context.eval (webpack://ehb-next/./cypress/e2e/sql-level.cy.ts:25:0)",
+                "diff": null
+              },
+              "uuid": "1804b34f-a103-4530-b015-e2a9e18079a1",
+              "parentUUID": "81b34085-9ff2-4577-992b-bbf9577fb443",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "should show upgrade prompt for restricted features",
+              "fullTitle": "SQL Level Access Control should show upgrade prompt for restricted features",
+              "timedOut": null,
+              "duration": 212,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "cy.visit('/ehb-dashboard/sql/advanced');\ncy.wait('@getSession');\ncy.wait('@verifySQL');\n// Check if upgrade prompt is shown\ncy.get('[data-testid=\"sql-upgrade-prompt\"]').should('be.visible');\ncy.get('[data-testid=\"sql-upgrade-button\"]').should('be.visible');",
+              "err": {
+                "message": "CypressError: `cy.visit()` failed trying to load:\n\nhttp://localhost:3000/ehb-dashboard/sql/advanced\n\nThe response we received from your web server was:\n\n  > 500: Internal Server Error\n\nThis was considered a failure because the status code was not `2xx`.\n\nIf you do not want status codes to cause failures pass the option: `failOnStatusCode: false`",
+                "estack": "CypressError: `cy.visit()` failed trying to load:\n\nhttp://localhost:3000/ehb-dashboard/sql/advanced\n\nThe response we received from your web server was:\n\n  > 500: Internal Server Error\n\nThis was considered a failure because the status code was not `2xx`.\n\nIf you do not want status codes to cause failures pass the option: `failOnStatusCode: false`\n    at <unknown> (http://localhost:3000/__cypress/runner/cypress_runner.js:131591:76)\n    at visitFailedByErr (http://localhost:3000/__cypress/runner/cypress_runner.js:131006:12)\n    at <unknown> (http://localhost:3000/__cypress/runner/cypress_runner.js:131574:13)\n    at tryCatcher (http://localhost:3000/__cypress/runner/cypress_runner.js:1830:23)\n    at Promise._settlePromiseFromHandler (http://localhost:3000/__cypress/runner/cypress_runner.js:1542:31)\n    at Promise._settlePromise (http://localhost:3000/__cypress/runner/cypress_runner.js:1599:18)\n    at Promise._settlePromise0 (http://localhost:3000/__cypress/runner/cypress_runner.js:1644:10)\n    at Promise._settlePromises (http://localhost:3000/__cypress/runner/cypress_runner.js:1720:18)\n    at _drainQueueStep (http://localhost:3000/__cypress/runner/cypress_runner.js:2430:12)\n    at _drainQueue (http://localhost:3000/__cypress/runner/cypress_runner.js:2423:9)\n    at Async._drainQueues (http://localhost:3000/__cypress/runner/cypress_runner.js:2439:5)\n    at Async.drainQueues (http://localhost:3000/__cypress/runner/cypress_runner.js:2309:14)\nFrom Your Spec Code:\n    at Context.eval (webpack://ehb-next/./cypress/e2e/sql-level.cy.ts:33:0)",
+                "diff": null
+              },
+              "uuid": "8e4fed50-2e2d-4063-ae76-97c3649de7e8",
+              "parentUUID": "81b34085-9ff2-4577-992b-bbf9577fb443",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "should display correct SQL level badge",
+              "fullTitle": "SQL Level Access Control should display correct SQL level badge",
+              "timedOut": null,
+              "duration": 255,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "cy.visit('/ehb-dashboard/sql');\ncy.wait('@getSession');\ncy.wait('@verifySQL');\ncy.get('[data-testid=\"sql-level-badge\"]').should('be.visible').and('contain', 'Level 2');",
+              "err": {
+                "message": "CypressError: `cy.visit()` failed trying to load:\n\nhttp://localhost:3000/ehb-dashboard/sql\n\nThe response we received from your web server was:\n\n  > 500: Internal Server Error\n\nThis was considered a failure because the status code was not `2xx`.\n\nIf you do not want status codes to cause failures pass the option: `failOnStatusCode: false`",
+                "estack": "CypressError: `cy.visit()` failed trying to load:\n\nhttp://localhost:3000/ehb-dashboard/sql\n\nThe response we received from your web server was:\n\n  > 500: Internal Server Error\n\nThis was considered a failure because the status code was not `2xx`.\n\nIf you do not want status codes to cause failures pass the option: `failOnStatusCode: false`\n    at <unknown> (http://localhost:3000/__cypress/runner/cypress_runner.js:131591:76)\n    at visitFailedByErr (http://localhost:3000/__cypress/runner/cypress_runner.js:131006:12)\n    at <unknown> (http://localhost:3000/__cypress/runner/cypress_runner.js:131574:13)\n    at tryCatcher (http://localhost:3000/__cypress/runner/cypress_runner.js:1830:23)\n    at Promise._settlePromiseFromHandler (http://localhost:3000/__cypress/runner/cypress_runner.js:1542:31)\n    at Promise._settlePromise (http://localhost:3000/__cypress/runner/cypress_runner.js:1599:18)\n    at Promise._settlePromise0 (http://localhost:3000/__cypress/runner/cypress_runner.js:1644:10)\n    at Promise._settlePromises (http://localhost:3000/__cypress/runner/cypress_runner.js:1720:18)\n    at _drainQueueStep (http://localhost:3000/__cypress/runner/cypress_runner.js:2430:12)\n    at _drainQueue (http://localhost:3000/__cypress/runner/cypress_runner.js:2423:9)\n    at Async._drainQueues (http://localhost:3000/__cypress/runner/cypress_runner.js:2439:5)\n    at Async.drainQueues (http://localhost:3000/__cypress/runner/cypress_runner.js:2309:14)\nFrom Your Spec Code:\n    at Context.eval (webpack://ehb-next/./cypress/e2e/sql-level.cy.ts:41:0)",
+                "diff": null
+              },
+              "uuid": "8cb77389-101a-4551-9219-7367921312ae",
+              "parentUUID": "81b34085-9ff2-4577-992b-bbf9577fb443",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "should show loyalty lock status",
+              "fullTitle": "SQL Level Access Control should show loyalty lock status",
+              "timedOut": null,
+              "duration": 298,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "cy.visit('/ehb-dashboard/sql');\ncy.wait('@getSession');\ncy.wait('@verifySQL');\ncy.get('[data-testid=\"loyalty-lock-status\"]').should('be.visible').and('contain', 'Active');",
+              "err": {
+                "message": "CypressError: `cy.visit()` failed trying to load:\n\nhttp://localhost:3000/ehb-dashboard/sql\n\nThe response we received from your web server was:\n\n  > 500: Internal Server Error\n\nThis was considered a failure because the status code was not `2xx`.\n\nIf you do not want status codes to cause failures pass the option: `failOnStatusCode: false`",
+                "estack": "CypressError: `cy.visit()` failed trying to load:\n\nhttp://localhost:3000/ehb-dashboard/sql\n\nThe response we received from your web server was:\n\n  > 500: Internal Server Error\n\nThis was considered a failure because the status code was not `2xx`.\n\nIf you do not want status codes to cause failures pass the option: `failOnStatusCode: false`\n    at <unknown> (http://localhost:3000/__cypress/runner/cypress_runner.js:131591:76)\n    at visitFailedByErr (http://localhost:3000/__cypress/runner/cypress_runner.js:131006:12)\n    at <unknown> (http://localhost:3000/__cypress/runner/cypress_runner.js:131574:13)\n    at tryCatcher (http://localhost:3000/__cypress/runner/cypress_runner.js:1830:23)\n    at Promise._settlePromiseFromHandler (http://localhost:3000/__cypress/runner/cypress_runner.js:1542:31)\n    at Promise._settlePromise (http://localhost:3000/__cypress/runner/cypress_runner.js:1599:18)\n    at Promise._settlePromise0 (http://localhost:3000/__cypress/runner/cypress_runner.js:1644:10)\n    at Promise._settlePromises (http://localhost:3000/__cypress/runner/cypress_runner.js:1720:18)\n    at _drainQueueStep (http://localhost:3000/__cypress/runner/cypress_runner.js:2430:12)\n    at _drainQueue (http://localhost:3000/__cypress/runner/cypress_runner.js:2423:9)\n    at Async._drainQueues (http://localhost:3000/__cypress/runner/cypress_runner.js:2439:5)\n    at Async.drainQueues (http://localhost:3000/__cypress/runner/cypress_runner.js:2309:14)\nFrom Your Spec Code:\n    at Context.eval (webpack://ehb-next/./cypress/e2e/sql-level.cy.ts:47:0)",
+                "diff": null
+              },
+              "uuid": "a95c6f41-efc8-4999-a0c2-e306df5cc252",
+              "parentUUID": "81b34085-9ff2-4577-992b-bbf9577fb443",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "should handle SQL level check errors gracefully",
+              "fullTitle": "SQL Level Access Control should handle SQL level check errors gracefully",
+              "timedOut": null,
+              "duration": 287,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "// Mock error response\ncy.intercept('GET', '/api/sql/verify', {\n    statusCode: 500,\n    body: {\n        success: false,\n        error: 'Internal server error',\n    },\n}).as('verifySQLError');\ncy.visit('/ehb-dashboard/sql');\ncy.wait('@getSession');\ncy.wait('@verifySQLError');\n// Check if error message is displayed\ncy.get('[data-testid=\"error-message\"]')\n    .should('be.visible')\n    .and('contain', 'Error loading SQL level');",
+              "err": {
+                "message": "CypressError: `cy.visit()` failed trying to load:\n\nhttp://localhost:3000/ehb-dashboard/sql\n\nThe response we received from your web server was:\n\n  > 500: Internal Server Error\n\nThis was considered a failure because the status code was not `2xx`.\n\nIf you do not want status codes to cause failures pass the option: `failOnStatusCode: false`",
+                "estack": "CypressError: `cy.visit()` failed trying to load:\n\nhttp://localhost:3000/ehb-dashboard/sql\n\nThe response we received from your web server was:\n\n  > 500: Internal Server Error\n\nThis was considered a failure because the status code was not `2xx`.\n\nIf you do not want status codes to cause failures pass the option: `failOnStatusCode: false`\n    at <unknown> (http://localhost:3000/__cypress/runner/cypress_runner.js:131591:76)\n    at visitFailedByErr (http://localhost:3000/__cypress/runner/cypress_runner.js:131006:12)\n    at <unknown> (http://localhost:3000/__cypress/runner/cypress_runner.js:131574:13)\n    at tryCatcher (http://localhost:3000/__cypress/runner/cypress_runner.js:1830:23)\n    at Promise._settlePromiseFromHandler (http://localhost:3000/__cypress/runner/cypress_runner.js:1542:31)\n    at Promise._settlePromise (http://localhost:3000/__cypress/runner/cypress_runner.js:1599:18)\n    at Promise._settlePromise0 (http://localhost:3000/__cypress/runner/cypress_runner.js:1644:10)\n    at Promise._settlePromises (http://localhost:3000/__cypress/runner/cypress_runner.js:1720:18)\n    at _drainQueueStep (http://localhost:3000/__cypress/runner/cypress_runner.js:2430:12)\n    at _drainQueue (http://localhost:3000/__cypress/runner/cypress_runner.js:2423:9)\n    at Async._drainQueues (http://localhost:3000/__cypress/runner/cypress_runner.js:2439:5)\n    at Async.drainQueues (http://localhost:3000/__cypress/runner/cypress_runner.js:2309:14)\nFrom Your Spec Code:\n    at Context.eval (webpack://ehb-next/./cypress/e2e/sql-level.cy.ts:61:0)",
+                "diff": null
+              },
+              "uuid": "27735508-3b52-4987-8342-121a35424f39",
+              "parentUUID": "81b34085-9ff2-4577-992b-bbf9577fb443",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [],
+          "failures": [
+            "1804b34f-a103-4530-b015-e2a9e18079a1",
+            "8e4fed50-2e2d-4063-ae76-97c3649de7e8",
+            "8cb77389-101a-4551-9219-7367921312ae",
+            "a95c6f41-efc8-4999-a0c2-e306df5cc252",
+            "27735508-3b52-4987-8342-121a35424f39"
+          ],
+          "pending": [],
+          "skipped": [],
+          "duration": 1296,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.0.1"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": false,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.3"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "cypress/reports",
+        "overwrite": false,
+        "html": false,
+        "json": true
+      },
+      "version": "6.2.0"
+    }
+  }
+}

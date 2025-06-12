@@ -1,0 +1,184 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 1,
+    "passes": 0,
+    "pending": 0,
+    "failures": 1,
+    "start": "2025-06-12T07:34:38.922Z",
+    "end": "2025-06-12T07:34:40.978Z",
+    "duration": 2056,
+    "testsRegistered": 5,
+    "passPercent": 0,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 4,
+    "hasSkipped": true
+  },
+  "results": [
+    {
+      "uuid": "59dc0f9e-a502-4746-b2cd-ff51b8703176",
+      "title": "",
+      "fullFile": "cypress\\e2e\\wallet.cy.ts",
+      "file": "cypress\\e2e\\wallet.cy.ts",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "cb60d123-baf2-48d2-9a7b-1a585a1f5363",
+          "title": "Wallet Operations",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "should display wallet balance",
+              "fullTitle": "Wallet Operations should display wallet balance",
+              "timedOut": null,
+              "duration": 305,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "cy.get('[data-testid=\"wallet-balance\"]').should('be.visible');\ncy.get('[data-testid=\"wallet-balance\"]').should('contain', '$');",
+              "err": {
+                "message": "CypressError: `cy.visit()` failed trying to load:\n\nhttp://localhost:3000/login\n\nThe response we received from your web server was:\n\n  > 500: Internal Server Error\n\nThis was considered a failure because the status code was not `2xx`.\n\nIf you do not want status codes to cause failures pass the option: `failOnStatusCode: false`\n\nThis error occurred while creating the session. Because the session setup failed, we failed the test.\n\nBecause this error occurred during a `before each` hook we are skipping the remaining tests in the current suite: `Wallet Operations`",
+                "estack": "CypressError: `cy.visit()` failed trying to load:\n\nhttp://localhost:3000/login\n\nThe response we received from your web server was:\n\n  > 500: Internal Server Error\n\nThis was considered a failure because the status code was not `2xx`.\n\nIf you do not want status codes to cause failures pass the option: `failOnStatusCode: false`\n\nThis error occurred while creating the session. Because the session setup failed, we failed the test.\n\nBecause this error occurred during a `before each` hook we are skipping the remaining tests in the current suite: `Wallet Operations`\n    at <unknown> (http://localhost:3000/__cypress/runner/cypress_runner.js:131591:76)\n    at visitFailedByErr (http://localhost:3000/__cypress/runner/cypress_runner.js:131006:12)\n    at <unknown> (http://localhost:3000/__cypress/runner/cypress_runner.js:131574:13)\n    at tryCatcher (http://localhost:3000/__cypress/runner/cypress_runner.js:1830:23)\n    at Promise._settlePromiseFromHandler (http://localhost:3000/__cypress/runner/cypress_runner.js:1542:31)\n    at Promise._settlePromise (http://localhost:3000/__cypress/runner/cypress_runner.js:1599:18)\n    at Promise._settlePromise0 (http://localhost:3000/__cypress/runner/cypress_runner.js:1644:10)\n    at Promise._settlePromises (http://localhost:3000/__cypress/runner/cypress_runner.js:1720:18)\n    at _drainQueueStep (http://localhost:3000/__cypress/runner/cypress_runner.js:2430:12)\n    at _drainQueue (http://localhost:3000/__cypress/runner/cypress_runner.js:2423:9)\n    at Async._drainQueues (http://localhost:3000/__cypress/runner/cypress_runner.js:2439:5)\n    at Async.drainQueues (http://localhost:3000/__cypress/runner/cypress_runner.js:2309:14)\nFrom Your Spec Code:\n    at Object.eval [as setup] (webpack://ehb-next/./cypress/support/e2e.ts:5:0)",
+                "diff": null
+              },
+              "uuid": "d9cf7d46-6097-4f96-a9ce-8d503c6a5e4f",
+              "parentUUID": "cb60d123-baf2-48d2-9a7b-1a585a1f5363",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "should make a deposit",
+              "fullTitle": "Wallet Operations should make a deposit",
+              "timedOut": null,
+              "duration": 0,
+              "state": "skipped",
+              "speed": null,
+              "pass": false,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "var amount = '100';\ncy.get('[data-testid=\"deposit-button\"]').click();\ncy.get('[data-testid=\"amount-input\"]').type(amount);\ncy.get('[data-testid=\"deposit-submit\"]').click();\ncy.get('[data-testid=\"transaction-success\"]').should('be.visible');\ncy.get('[data-testid=\"wallet-balance\"]').should('contain', amount);",
+              "err": {},
+              "uuid": "5b110710-7ede-4648-9798-71f833585369",
+              "parentUUID": "cb60d123-baf2-48d2-9a7b-1a585a1f5363",
+              "isHook": false,
+              "skipped": true
+            },
+            {
+              "title": "should view transaction history",
+              "fullTitle": "Wallet Operations should view transaction history",
+              "timedOut": null,
+              "duration": 0,
+              "state": "skipped",
+              "speed": null,
+              "pass": false,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.get('[data-testid=\"transaction-history\"]').should('be.visible');\ncy.get('[data-testid=\"transaction-item\"]').should('have.length.at.least', 1);",
+              "err": {},
+              "uuid": "b41b21fd-45c6-4d9c-9ece-1d15fc9a3b99",
+              "parentUUID": "cb60d123-baf2-48d2-9a7b-1a585a1f5363",
+              "isHook": false,
+              "skipped": true
+            },
+            {
+              "title": "should filter transactions by type",
+              "fullTitle": "Wallet Operations should filter transactions by type",
+              "timedOut": null,
+              "duration": 0,
+              "state": "skipped",
+              "speed": null,
+              "pass": false,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.get('[data-testid=\"filter-deposits\"]').click();\ncy.get('[data-testid=\"transaction-item\"]').each(function ($el) {\n    cy.wrap($el).should('contain', 'Deposit');\n});",
+              "err": {},
+              "uuid": "aff8f5a4-ca7e-448c-9778-78602dfbb717",
+              "parentUUID": "cb60d123-baf2-48d2-9a7b-1a585a1f5363",
+              "isHook": false,
+              "skipped": true
+            },
+            {
+              "title": "should handle failed transactions gracefully",
+              "fullTitle": "Wallet Operations should handle failed transactions gracefully",
+              "timedOut": null,
+              "duration": 0,
+              "state": "skipped",
+              "speed": null,
+              "pass": false,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.intercept('POST', '/api/wallet/transactions', {\n    statusCode: 400,\n    body: { error: 'Invalid amount' },\n}).as('failedTransaction');\ncy.get('[data-testid=\"deposit-button\"]').click();\ncy.get('[data-testid=\"amount-input\"]').type('-100');\ncy.get('[data-testid=\"deposit-submit\"]').click();\ncy.get('[data-testid=\"transaction-error\"]').should('be.visible');\ncy.get('[data-testid=\"transaction-error\"]').should('contain', 'Invalid amount');",
+              "err": {},
+              "uuid": "bba83b86-d99c-4cef-8836-af0dadf3a11e",
+              "parentUUID": "cb60d123-baf2-48d2-9a7b-1a585a1f5363",
+              "isHook": false,
+              "skipped": true
+            }
+          ],
+          "suites": [],
+          "passes": [],
+          "failures": ["d9cf7d46-6097-4f96-a9ce-8d503c6a5e4f"],
+          "pending": [],
+          "skipped": [
+            "5b110710-7ede-4648-9798-71f833585369",
+            "b41b21fd-45c6-4d9c-9ece-1d15fc9a3b99",
+            "aff8f5a4-ca7e-448c-9778-78602dfbb717",
+            "bba83b86-d99c-4cef-8836-af0dadf3a11e"
+          ],
+          "duration": 305,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.0.1"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": false,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.3"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "cypress/reports",
+        "overwrite": false,
+        "html": false,
+        "json": true
+      },
+      "version": "6.2.0"
+    }
+  }
+}
